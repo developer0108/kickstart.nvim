@@ -34,11 +34,11 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   'm4xshen/autoclose.nvim',
-  'xiyaowong/transparent.nvim',
+  -- 'xiyaowong/transparent.nvim',
   'nvim-tree/nvim-tree.lua',
-
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
+  'windwp/nvim-ts-autotag',
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -49,7 +49,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} , tag = "legacy"},
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -94,13 +94,9 @@ require('lazy').setup({
   },
 
   {
-    -- my config 
-    'bluz71/vim-moonfly-colors',
-    priority = 1000,
-    name = "moonfly",
-    config = function()
-      vim.cmd.colorscheme 'moonfly'
-    end,
+    "catppuccin/nvim",
+    name="catppuccin",
+    priority= 1000
   },
 
   {
@@ -109,8 +105,8 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
+        icons_enabled = true,
+        theme = 'moonfly',
         component_separators = '|',
         section_separators = '',
       },
@@ -173,8 +169,6 @@ require('lazy').setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
-
--- Set background transparent 
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -278,6 +272,11 @@ require('nvim-treesitter.configs').setup {
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
+
+  autotag = {
+    enable = true,
+    filetypes = {"html", "xml", "js", "jsx"}
+  },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -480,8 +479,12 @@ cmp.setup {
 }
 
 require('autoclose').setup()
-require('transparent').setup()
-vim.g.transparent_enabled = true
+require('catppuccin').setup({
+  flavour = "Mocha",
+  transparent_background = true
+})
+
+vim.cmd.colorscheme "catppuccin-mocha"
 
 vim.g.loaded_netrw = 1
 vim.loaded_netrwPlugin = 1
