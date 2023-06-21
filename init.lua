@@ -38,7 +38,13 @@ require('lazy').setup({
   'nvim-tree/nvim-tree.lua',
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
-  'windwp/nvim-ts-autotag',
+  {
+    'windwp/nvim-ts-autotag',
+    lazy = false,
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end,
+  },
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -272,12 +278,9 @@ require('nvim-treesitter.configs').setup {
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
-
   autotag = {
     enable = true,
-    filetypes = {"html", "xml", "js", "jsx"}
   },
-
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
   incremental_selection = {
@@ -480,7 +483,7 @@ cmp.setup {
 
 require('autoclose').setup()
 require('catppuccin').setup({
-  flavour = "Mocha",
+  flavour = 'mocha',
   transparent_background = true
 })
 
