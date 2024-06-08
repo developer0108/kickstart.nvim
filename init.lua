@@ -31,9 +31,11 @@ require('lazy').setup({
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+  'nvim-tree/nvim-web-devicons',
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   'm4xshen/autoclose.nvim',
+  'lervag/vimtex',
   -- 'xiyaowong/transparent.nvim',
   'nvim-tree/nvim-tree.lua',
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -59,7 +61,7 @@ require('lazy').setup({
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
-    },
+    }
   },
   {
     -- Autocompletion
@@ -113,8 +115,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'moonfly',
-        component_separators = '|',
+        theme = 'auto',
+        component_separators = '',
         section_separators = '',
       },
     },
@@ -123,12 +125,10 @@ require('lazy').setup({
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    opts = {},
   },
 
   -- "gc" to comment visual regions/lines
@@ -158,7 +158,11 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-
+  {
+    'eoh-bse/minintro.nvim',
+    config = true,
+    lazy = false
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -185,7 +189,11 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- wrap text by default
-vim.wo.wrap = true
+vim.wo.wrap = false
+
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 
 
 -- Enable mouse mode
@@ -343,6 +351,20 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
+-- vimtex setup
+vim.g.vimtex_compiler_latexmk_engines = {
+  _ = '-xelatex'
+}
+vim.g.vimtex_compiler_latexmk = {
+  options = {
+    '-verbose',
+    '-file-line-error',
+    '-synctex=1',
+    '-interaction=nonstopmode',
+    '-shell-escape'
+  }
+}
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -412,6 +434,15 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  pylsp = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {"E501"}
+        }
+      }
+    }
+  }
 }
 
 -- Setup neovim lua configuration
@@ -488,9 +519,12 @@ cmp.setup {
 
 require('autoclose').setup()
 require('catppuccin').setup({
-  flavour = 'mocha',
+  flavour = 'macchiato',
   transparent_background = true
 })
+
+vim.keymap.set('n', '<F10>', ':update<bar>!python %<CR>')
+
 
 vim.cmd.colorscheme "catppuccin-mocha"
 
@@ -499,7 +533,7 @@ vim.loaded_netrwPlugin = 1
 
 require("nvim-tree").setup({
   git = {
-    enable = false
+    enable = true
   }
 })
 
